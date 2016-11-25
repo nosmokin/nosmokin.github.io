@@ -48,9 +48,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -61,6 +61,53 @@
 
       <div class="outer">
         <section id="main">
+  
+    <article id="post-note2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/25/note2/" class="article-date">
+  <time datetime="2016-11-25T10:42:01.000Z" itemprop="datePublished">November 25, 2016</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/25/note2/">threeJs学习笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="创建一个场景"><a href="#创建一个场景" class="headerlink" title="创建一个场景"></a>创建一个场景</h5><p>为了用Three.js显示任何东西，需要三个东西：一个场景，一个摄像机和一个渲染器，才可以用相机渲染场景</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> scene = <span class="keyword">new</span> THREE.Scene();</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> camera = <span class="keyword">new</span> THREE.PerspectiveCamera( <span class="number">75</span>, <span class="built_in">window</span>.innerWidth / <span class="built_in">window</span>.innerHeight, <span class="number">0.1</span>, <span class="number">1000</span> );</div></pre></td></tr></table></figure>
+<p>有许多不同的相机类型，PerspectiveCamera第一个参数为视野范围，第二个参数为横纵比，第三第四分别为近，远，超过这个范围的物体不会被渲染</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> renderer = <span class="keyword">new</span> THREE.WebGLRenderer();</div><div class="line">renderer.setSize( <span class="built_in">window</span>.innerWidth, <span class="built_in">window</span>.innerHeight );</div><div class="line"><span class="built_in">document</span>.body.appendChild( renderer.domElement );</div></pre></td></tr></table></figure>
+<p>除了WebGLRenderer还有其他一些渲染器，通常用于旧版浏览器或者由于某种原因没有WebGL支持的用户。为了创建渲染器实例，还需要为其设置想要渲染的大小，如果希望渲染低分辨率，将<code>updateStyle</code> (第三个参数)设置为false</p>
+<h5 id="创建立方体"><a href="#创建立方体" class="headerlink" title="创建立方体"></a>创建立方体</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> geometry = <span class="keyword">new</span> THREE.BoxGeometry( <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span> );</div><div class="line"><span class="keyword">var</span> material = <span class="keyword">new</span> THREE.MeshBasicMaterial( &#123; <span class="attr">color</span>: <span class="number">0x00ff00</span> &#125; );</div><div class="line"><span class="keyword">var</span> cube = <span class="keyword">new</span> THREE.Mesh( geometry, material );</div><div class="line">scene.add( cube );</div><div class="line"></div><div class="line">camera.position.z = <span class="number">5</span>;</div></pre></td></tr></table></figure>
+<p>默认情况下，当我们调用<code>scene.add（）</code>时，添加的东西将被添加到坐标（0,0,0）</p>
+<h5 id="渲染场景"><a href="#渲染场景" class="headerlink" title="渲染场景"></a>渲染场景</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span>(<span class="params"></span>) </span>&#123;</div><div class="line"></div><div class="line">	requestAnimationFrame( render );</div><div class="line">	cube.rotation.x += <span class="number">0.1</span>;</div><div class="line">	cube.rotation.y += <span class="number">0.1</span>;</div><div class="line">	renderer.render( scene, camera );</div><div class="line"></div><div class="line">&#125;</div><div class="line">render();</div></pre></td></tr></table></figure>
+<p>渲染器会每秒60次的速度进行渲染</p>
+<p>最后一个旋转的立方体就会出现</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/25/note2/" data-id="civxnurfh0000gvtqjq972o6r" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-semantic-ui-button" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -102,7 +149,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/20/semantic-ui-button/" data-id="civqjoo4700024ttq96oc7657" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2016/11/20/semantic-ui-button/" data-id="civxnurfr0003gvtqlfi44q81" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Semantic/">Semantic</a></li></ul>
@@ -141,7 +188,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/16/First-Post/" data-id="civqjoo3z00004ttqbwoxnpo4" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2016/11/16/First-Post/" data-id="civxnurfl0001gvtq84nwwmux" class="article-share-link">Share</a>
       
       
     </footer>
@@ -186,7 +233,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/16/hello-world/" data-id="civqjoo4300014ttqb63w0em1" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2016/11/16/hello-world/" data-id="civxnurfq0002gvtq86dp0to6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -206,7 +253,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Mot-clés</h3>
+    <h3 class="widget-title">Tags</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Semantic/">Semantic</a></li></ul>
     </div>
@@ -216,7 +263,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
       <a href="/tags/Semantic/" style="font-size: 10px;">Semantic</a>
     </div>
@@ -235,9 +282,13 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Articles récents</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/11/25/note2/">threeJs学习笔记</a>
+          </li>
         
           <li>
             <a href="/2016/11/20/semantic-ui-button/">SemanticUI Button 常用方法</a>
@@ -264,7 +315,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2016 Henry<br>
-      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
